@@ -2,6 +2,8 @@ package com.floristeria.Persistence;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.floristeria.Application.NullValueException;
 import com.floristeria.Domain.Product;
 
 public class FlowerShopRepository {
@@ -10,20 +12,30 @@ public class FlowerShopRepository {
 	
 	public FlowerShopRepository() {}
 	
-	public void addProduct(Product product) throws Exception {
-		if(product == null) throw new Exception();
-		products.add(product);
+	public void addProduct(Product product) throws Exception
+	{
+		if(product == null)
+		{
+			throw new NullValueException();
+		}else
+			{
+				products.add(product);
+			}
+
 	}
 	
-	public List<Product> getAllProducts() {
+	public List<Product> getAllProducts()
+	{
 		return new ArrayList<>(products);		
 	}
 	
-	public Product getLastProduct() {
+	public Product getLastProduct()
+	{
 		return new ArrayList<>(products).get(products.size() - 1);		
 	}
 	
-	public List<Product> getAllProductsByClass() {
+	public List<Product> getAllProductsByClass()
+	{
 		return new ArrayList<>(products);		
 	}
 	

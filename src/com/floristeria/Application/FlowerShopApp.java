@@ -18,12 +18,15 @@ public class FlowerShopApp {
 	private static FlowerShopRepository repository;
 	public static Scanner dataEntry;
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args){
 		
 		int valInput = -1;
 		
 		createFlowerShop();
-		loadData();
+		try {
+			loadData();
+		} catch (Exception e) {
+		}
 		getAllProducts();
 		
 		while(valInput != 0) {
@@ -39,15 +42,27 @@ public class FlowerShopApp {
 					break;
 				case 1:
 					// 1 Add Tree	    			
-	    			addTree();
+					try {
+						addTree();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					break;
 				case 2:
 					// 2 Add Flower
-	    			addFlower();	
+					try {
+						addFlower();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					break;
 				case 3:
 					// 3 Add Deco
-	    			addDeco();
+					try {
+						addDeco();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					break;
 				case 4:
 					// 4 Products by Type
@@ -74,8 +89,8 @@ public class FlowerShopApp {
 		repository.addProduct(new Flower("Geranio", 1.99, "Blanco"));
 		repository.addProduct(new Flower("Rosa", 2.50, "Rosa"));
 		
-		repository.addProduct(new Deco("Maceta", 6.49, Material.plástico));
-		repository.addProduct(new Deco("Celosia", 1.99, Material.plástico));
+		repository.addProduct(new Deco("Maceta", 6.49, Material.plastico));
+		repository.addProduct(new Deco("Celosia", 1.99, Material.plastico));
 		repository.addProduct(new Deco("Cuenco", 2.50, Material.madera));		
 	}
 	
@@ -91,11 +106,15 @@ public class FlowerShopApp {
 		System.out.println("Tree price: ");	    				
 			price = dataEntry.nextDouble();
 		System.out.println("Tree height: ");	    				
-			height = dataEntry.nextDouble();			
-			
-		repository.addProduct(new Tree(name, price, height));
-		System.out.println(repository.getLastProduct().toString());
-		
+			height = dataEntry.nextDouble();
+			if (name.equals(""))
+			{
+				throw new NullValueException("");
+			}else
+				{
+				repository.addProduct(new Tree(name, price, height));
+				System.out.println(repository.getLastProduct().toString());
+				}
 	}
 	
 	public static void addFlower() throws Exception {
@@ -110,10 +129,16 @@ public class FlowerShopApp {
 		System.out.println("Flower price: ");	    				
 			price = dataEntry.nextDouble();
 		System.out.println("Flower color: ");	    				
-			color = dataEntry.next();	
-			
-		repository.addProduct(new Flower(name, price, color));	
-		System.out.println(repository.getLastProduct().toString());
+			color = dataEntry.next();
+
+			if (name.equals("")||color.equals(""))
+			{
+				throw new NullValueException("");
+			}else
+				{
+				repository.addProduct(new Flower(name, price, color));
+				System.out.println(repository.getLastProduct().toString());
+			}
 			
 	}
 	
@@ -128,15 +153,22 @@ public class FlowerShopApp {
 			name = dataEntry.next();	    			
 		System.out.println("Deco price: ");	    				
 			price = dataEntry.nextDouble();
-		System.out.println("Deco material ('madera' or 'plástico'): ");	    				
-			material = Material.valueOf(dataEntry.next());	
-			
-		repository.addProduct(new Deco(name, price, material));	
-		System.out.println(repository.getLastProduct().toString());
+		System.out.println("Deco material ('madera' or 'plastico'): ");
+			material = Material.valueOf(dataEntry.next());
+
+			if (name.equals(""))
+			{
+				throw new NullValueException("");
+			}else{
+				repository.addProduct(new Deco(name, price, material));
+				System.out.println(repository.getLastProduct().toString());
+			}
+
 					
 	}
 	
-	public static void getAllProducts() {
+	public static void getAllProducts()
+	{
 		
 		List<Product> products = repository.getAllProducts();
 				
@@ -149,7 +181,8 @@ public class FlowerShopApp {
 		System.out.println("");
 	}
 	
-	public static void getAllProductsByClass() {
+	public static void getAllProductsByClass()
+	{
 				
 		List<Product> products = repository.getAllProducts();
 		
