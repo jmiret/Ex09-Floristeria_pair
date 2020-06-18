@@ -3,7 +3,6 @@ package com.floristeria.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.floristeria.Application.NullValueException;
 import com.floristeria.Domain.Product;
 
 public class FlowerShopRepository {
