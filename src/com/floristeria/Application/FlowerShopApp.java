@@ -33,7 +33,14 @@ public class FlowerShopApp {
 			
 			Console.showConsole();
 
-			valInput = dataEntry.nextInt();
+			try {
+				valInput = dataEntry.nextInt();
+			} catch (Exception e)
+				{
+					dataEntry.next();
+					valInput= 5;
+				}
+
 			
 			switch(valInput) {
 				case 0:		
@@ -110,8 +117,8 @@ public class FlowerShopApp {
 			price = dataEntry.nextDouble();
 			} else
 				{
-					price = null;
 					dataEntry.next();
+					price = null;
 				}
 		System.out.println("Tree height: ");
 		if (dataEntry.hasNextDouble())
@@ -120,8 +127,8 @@ public class FlowerShopApp {
 				height = dataEntry.nextDouble();
 				}else
 					{
-						height = null;
 						dataEntry.next();
+						height = null;
 					}
 
 			if (name.equals("")||price==null||height==null)
