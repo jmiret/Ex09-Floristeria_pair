@@ -12,11 +12,11 @@ public class FlowerShopRepository {
 	
 	public FlowerShopRepository() {}
 	
-	public void addProduct(Product product) throws Exception
+	public void addProduct(Product product) throws NullValueException
 	{
 		if(product == null)
 		{
-			throw new NullValueException();
+			throw new NullValueException(" ALGUN PRODUCTO CREADO TIENE VALOR NULO O INCOMPATIBLE");
 		}else
 			{
 				products.add(product);

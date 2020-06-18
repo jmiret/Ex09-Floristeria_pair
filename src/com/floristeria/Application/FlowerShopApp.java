@@ -1,9 +1,6 @@
 package com.floristeria.Application;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import com.floristeria.Domain.Deco;
 import com.floristeria.Domain.Flower;
@@ -20,32 +17,35 @@ public class FlowerShopApp {
 	
 	public static void main(String[] args){
 		
-		int valInput = -1;
-		
+		boolean moreActions = true;
+		int valInput;
+
 		createFlowerShop();
+
 		try {
 			loadData();
-		} catch (Exception e) {
+		} catch (NullValueException e) {
+			System.out.println(e.getMessage());
 		}
 		getAllProducts();
 		
-		while(valInput != 0) {
+		while(moreActions == true) {
 			
 			Console.showConsole();
-			
+
 			valInput = dataEntry.nextInt();
 			
 			switch(valInput) {
 				case 0:		
-					valInput = 0;
+					moreActions = false;
 					exit();
 					break;
 				case 1:
 					// 1 Add Tree	    			
 					try {
 						addTree();
-					} catch (Exception e) {
-						e.printStackTrace();
+					} catch (NullValueException e) {
+						System.out.println(e.getMessage());
 					}
 					break;
 				case 2:
@@ -53,7 +53,7 @@ public class FlowerShopApp {
 					try {
 						addFlower();
 					} catch (Exception e) {
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					}
 					break;
 				case 3:
@@ -61,7 +61,7 @@ public class FlowerShopApp {
 					try {
 						addDeco();
 					} catch (Exception e) {
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					}
 					break;
 				case 4:
@@ -80,7 +80,7 @@ public class FlowerShopApp {
 		dataEntry = new Scanner(System.in);
 	}
 	
-	public static void loadData() throws Exception {
+	public static void loadData() throws NullValueException {
 		repository.addProduct(new Tree("Algarrobo", 475.99, 1.9));
 		repository.addProduct(new Tree("Pino", 375.99, 1.9));
 		repository.addProduct(new Tree("Roble", 1075.99, 1.9));
@@ -94,22 +94,39 @@ public class FlowerShopApp {
 		repository.addProduct(new Deco("Cuenco", 2.50, Material.madera));		
 	}
 	
-	public static void addTree() throws Exception {		
+	public static void addTree() throws NullValueException {
 		
 		String name;
-		double price;
-		double height;
+		Double price;
+		Double height;
 		
 		System.out.println("++ Add Tree: ");
 		System.out.println("Tree name: ");
-			name = dataEntry.next();	    			
-		System.out.println("Tree price: ");	    				
-			price = dataEntry.nextDouble();
-		System.out.println("Tree height: ");	    				
-			height = dataEntry.nextDouble();
-			if (name.equals(""))
+			name = dataEntry.next();
+		System.out.println("Tree price: ");
+		if (dataEntry.hasNextDouble())
 			{
-				throw new NullValueException("");
+
+			price = dataEntry.nextDouble();
+			} else
+				{
+					price = null;
+					dataEntry.next();
+				}
+		System.out.println("Tree height: ");
+		if (dataEntry.hasNextDouble())
+			{
+
+				height = dataEntry.nextDouble();
+				}else
+					{
+						height = null;
+						dataEntry.next();
+					}
+
+			if (name.equals("")||price==null||height==null)
+			{
+				throw new NullValueException("Tienes un valor nulo o que no corresponde con lo solicitado, NO SE HA CREADO EL PRODUCTO");
 			}else
 				{
 				repository.addProduct(new Tree(name, price, height));
@@ -117,48 +134,62 @@ public class FlowerShopApp {
 				}
 	}
 	
-	public static void addFlower() throws Exception {
+	public static void addFlower() throws NullValueException {
 		
 		String name;
-		double price;
+		Double price;
 		String color;
 		
 		System.out.println("++ Add Flower: ");
 		System.out.println("Flower name: ");
 			name = dataEntry.next();	    			
-		System.out.println("Flower price: ");	    				
+		System.out.println("Flower price: ");
+		if (dataEntry.hasNextDouble())
+		{
 			price = dataEntry.nextDouble();
-		System.out.println("Flower color: ");	    				
+		} else
+		{
+			price = null;
+			dataEntry.next();
+		}
+		System.out.println("Flower color: ");
 			color = dataEntry.next();
 
-			if (name.equals("")||color.equals(""))
-			{
-				throw new NullValueException("");
-			}else
-				{
-				repository.addProduct(new Flower(name, price, color));
-				System.out.println(repository.getLastProduct().toString());
-			}
+		if (name.equals("")||price==null||color.equals(""))
+		{
+			throw new NullValueException("Tienes un valor nulo o que no corresponde con lo solicitado, NO SE HA CREADO EL PRODUCTO");
+		}else
+		{
+			repository.addProduct(new Flower(name, price, color));
+			System.out.println(repository.getLastProduct().toString());
+		}
 			
 	}
 	
-	public static void addDeco() throws Exception {
+	public static void addDeco() throws NullValueException {
 		
 		String name;
-		double price;
+		Double price;
 		Material material;
 		
 		System.out.println("++ Add Deco: ");
 		System.out.println("Deco name: ");
 			name = dataEntry.next();	    			
-		System.out.println("Deco price: ");	    				
+		System.out.println("Deco price: ");
+		if (dataEntry.hasNextDouble())
+		{
 			price = dataEntry.nextDouble();
+		} else
+		{
+			price = null;
+			dataEntry.next();
+		}
 		System.out.println("Deco material ('madera' or 'plastico'): ");
 			material = Material.valueOf(dataEntry.next());
 
-			if (name.equals(""))
+			if (name.equals("")||price==null||material.equals(""))
 			{
-				throw new NullValueException("");
+				throw new NullValueException("Tienes un valor nulo o que no corresponde con lo solicitado, NO SE HA CREADO EL PRODUCTO");
 			}else{
 				repository.addProduct(new Deco(name, price, material));
 				System.out.println(repository.getLastProduct().toString());
